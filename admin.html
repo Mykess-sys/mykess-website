@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f4f4;
+}
+
+input,textarea{
+width:300px;
+padding:10px;
+margin:10px;
+}
+
+button{
+padding:10px 20px;
+background:black;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Upload Product</h2>
+
+<input id="name" placeholder="Product Name"><br>
+
+<input id="price" placeholder="Price"><br>
+
+<input id="images" placeholder="Image URLs (comma separated)"><br>
+
+<input id="video" placeholder="Video URL"><br>
+
+<textarea id="description" placeholder="Description"></textarea><br>
+
+<button onclick="upload()">Upload</button>
+
+<h2>Delete Product</h2>
+
+<div id="list"></div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("products")) || []
+
+function upload(){
+
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let images=document.getElementById("images").value.split(",")
+let video=document.getElementById("video").value
+let description=document.getElementById("description").value
+
+products.push({
+name:name,
+price:price,
+images:images,
+video:video,
+description:description
+})
+
+localStorage.setItem("products",JSON.stringify(products))
+
+alert("Product Uploaded")
+
+location.reload()
+
+}
+
+function showProducts(){
+
+let container=document.getElementById("list")
+
+products.forEach((p,i)=>{
+
+container.innerHTML += `
+
+<p>${p.name} 
+<button onclick="deleteProduct(${i})">Delete</button>
+</p>
+
+`
+
+})
+
+}
+
+function deleteProduct(i){
+
+products.splice(i,1)
+
+localStorage.setItem("products",JSON.stringify(products))
+
+location.reload()
+
+}
+
+showProducts()
+
+</script>
+
+</body>
+</html>
